@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#073b82">
+  <title>REGRIGERAR | Gestão</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <main id="loginView" class="login-wrap">
+    <section class="login-card">
+      <img src="assets/logo-refrigerar.jpg" class="brand-logo" alt="REGRIGERAR">
+      <h1>Gestão REGRIGERAR</h1>
+      <p>Entre para gerenciar clientes, orçamentos e financeiro.</p>
+      <form id="loginForm">
+        <label>E-mail<input id="email" type="email" required autocomplete="username" placeholder="seu@email.com"></label>
+        <label>Senha<input id="password" type="password" required autocomplete="current-password" placeholder="Sua senha"></label>
+        <button class="primary" type="submit">Entrar</button>
+        <p id="loginMessage" class="message"></p>
+      </form>
+    </section>
+  </main>
+
+  <div id="appView" class="app hidden">
+    <aside class="sidebar">
+      <img src="assets/logo-refrigerar.jpg" alt="REGRIGERAR" class="side-logo">
+      <div class="side-caption">SISTEMA DE GESTÃO</div>
+      <nav>
+        <button data-page="dashboard" class="nav-btn active">Visão geral</button>
+        <button data-page="quotes" class="nav-btn">Orçamentos</button>
+        <button data-page="clients" class="nav-btn">Clientes</button>
+        <button data-page="finance" class="nav-btn">Financeiro</button>
+      </nav>
+      <button id="logoutBtn" class="logout">Sair da conta</button>
+    </aside>
+
+    <section class="content">
+      <header class="topbar">
+        <div><span class="eyebrow">REGRIGERAR INSTALAÇÃO E MANUTENÇÃO</span><h1 id="pageTitle">Visão geral</h1></div>
+        <span class="online-tag">● Sistema online</span>
+      </header>
+
+      <section id="dashboardPage" class="page">
+        <div class="stats">
+          <article class="stat"><span>Orçamentos</span><strong id="statQuotes">0</strong></article>
+          <article class="stat"><span>Clientes</span><strong id="statClients">0</strong></article>
+          <article class="stat"><span>Receitas registradas</span><strong id="statIncome">R$ 0,00</strong></article>
+          <article class="stat"><span>Despesas registradas</span><strong id="statExpense">R$ 0,00</strong></article>
+        </div>
+        <article class="panel"><h2>Bem-vindo à REGRIGERAR</h2><p>Use o menu para cadastrar clientes, preparar orçamentos e acompanhar suas movimentações financeiras.</p></article>
+      </section>
+
+      <section id="clientsPage" class="page hidden">
+        <article class="panel">
+          <h2>Novo cliente</h2>
+          <form id="clientForm" class="form-grid">
+            <label>Nome completo*<input id="clientName" required></label>
+            <label>Telefone / WhatsApp<input id="clientPhone" placeholder="(71) 99999-9999"></label>
+            <label class="wide">Endereço<input id="clientAddress"></label>
+            <label class="wide">Observações<input id="clientNotes"></label>
+            <button class="primary" type="submit">Salvar cliente</button>
+          </form>
+        </article>
+        <article class="panel"><h2>Clientes cadastrados</h2><div id="clientsList" class="table-wrap"></div></article>
+      </section>
+
+      <section id="quotesPage" class="page hidden">
+        <article class="panel">
+          <h2>Novo orçamento</h2>
+          <form id="quoteForm" class="form-grid">
+            <label>Cliente*<select id="quoteClient" required><option value="">Selecione um cliente</option></select></label>
+            <label>Equipamento<input id="equipment" value="Ar-condicionado Split"></label>
+            <label>Capacidade<input id="capacity" placeholder="Ex.: 9.000 BTUs"></label>
+            <label>Serviço<input id="service" value="Instalação"></label>
+            <label>Quantidade<input id="quantity" type="number" min="1" value="1" required></label>
+            <label>Valor do serviço (R$)<input id="serviceValue" type="number" min="0" step="0.01" value="0"></label>
+            <label>Materiais (R$)<input id="materials" type="number" min="0" step="0.01" value="0"></label>
+            <label>Deslocamento (R$)<input id="travel" type="number" min="0" step="0.01" value="0"></label>
+            <label>Desconto (R$)<input id="discount" type="number" min="0" step="0.01" value="0"></label>
+            <label>Validade (dias)<input id="validity" type="number" min="1" value="7"></label>
+            <label class="wide">Observações<textarea id="quoteNotes" rows="2">Serviço realizado por profissional especializado.</textarea></label>
+            <div class="total-line wide">Total do orçamento: <strong id="quoteTotal">R$ 0,00</strong></div>
+            <button class="primary" type="submit">Salvar orçamento</button>
+          </form>
+        </article>
+        <article class="panel"><h2>Orçamentos cadastrados</h2><div id="quotesList" class="table-wrap"></div></article>
+      </section>
+
+      <section id="financePage" class="page hidden">
+        <article class="panel">
+          <h2>Novo lançamento</h2>
+          <form id="financeForm" class="form-grid">
+            <label>Descrição*<input id="finDescription" required placeholder="Ex.: Pagamento de instalação"></label>
+            <label>Tipo<select id="finType"><option value="income">Receita</option><option value="expense">Despesa</option></select></label>
+            <label>Valor (R$)*<input id="finAmount" type="number" min="0.01" step="0.01" required></label>
+            <label>Data<input id="finDate" type="date" required></label>
+            <button class="primary" type="submit">Registrar lançamento</button>
+          </form>
+        </article>
+        <article class="panel"><h2>Movimentações</h2><div id="financeList" class="table-wrap"></div></article>
+      </section>
+      <footer>REGRIGERAR • Instalação, manutenção preventiva, higienização e reparo.</footer>
+    </section>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
